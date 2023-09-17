@@ -1,9 +1,32 @@
-from flask import Flask
+from flask import render_template, request, redirect, url_for, flash
+from . import app
 
-# Crea una instancia de la aplicación Flask
-app = Flask(__name__)
+# Ruta para mostrar el formulario de inicio de sesión
+@app.route('/usuario/login', methods=['GET'])
+def login():
+    return render_template('login.html')
 
-# Configuración de la aplicación (puedes definir configuraciones aquí)
+# Ruta para mostrar el formulario de registro
+@app.route('/usuario/registro', methods=['GET'])
+def registro():
+    return render_template('registro.html')
 
-# Importa las vistas después de crear la instancia de la aplicación para evitar ciclos de importación
-from miappfrontend.app import routes
+@app.route('/usuario/registro', methods=['POST'])
+def registro_submit():
+    # Aquí iría tu código para manejar el registro...
+
+
+# Resto de tus rutas del frontend aquí
+# ...
+
+# Por ejemplo, si tienes una ruta para el panel de usuario, podría verse así:
+@app.route('/usuario/dashboard', methods=['GET'])
+def dashboard():
+    # Lógica de tu panel de usuario
+    return render_template('dashboard.html')
+
+# El resto de tus rutas del frontend que coincidan con el backend
+# ...
+
+if __name__ == '__main__':
+    app.run(debug=True)
