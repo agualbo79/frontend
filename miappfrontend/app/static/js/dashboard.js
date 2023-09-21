@@ -13,7 +13,17 @@ document.addEventListener("DOMContentLoaded", function() {
       // Muestra el formulario
       crearServidorForm.style.display = "block";
   });
+// Al cargar la página, carga los servidores del almacenamiento local
+window.addEventListener("load", function() {
+    var servidores = JSON.parse(localStorage.getItem("servidores")) || [];
+    var listaServidores = document.getElementById("lista-servidores");
 
+    servidores.forEach(function(servidor) {
+        var nuevoServidor = document.createElement("div");
+        nuevoServidor.textContent = servidor.nombre;
+        listaServidores.appendChild(nuevoServidor);
+    });
+});
   // Agrega un evento de envío al formulario para enviar los datos al backend
   crearServidorForm.addEventListener("submit", function(event) {
       event.preventDefault(); // Evita el envío del formulario por defecto
@@ -45,6 +55,12 @@ document.addEventListener("DOMContentLoaded", function() {
     if (response.status === 200) {
         // El servidor respondió con éxito
         alert("Servidor creado exitosamente");
+
+         // Guarda el servidor en el almacenamiento local
+         var servidores = JSON.parse(localStorage.getItem("servidores")) || [];
+         servidores.push(datosServidor);
+         localStorage.setItem("servidores", JSON.stringify(servidores));
+
 
         // Aquí puedes agregar el código para visualizar el servidor en el frontend
         // Por ejemplo, podrías agregar un nuevo elemento a una lista de servidores
