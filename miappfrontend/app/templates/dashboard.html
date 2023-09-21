@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala de chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+   
+</head>
+
+<body>
+
+    <div class="rootDiv">
+        <!-- Barra lateral con servidores y usuario -->
+        <div class="side-bar">
+            <div class="nav">
+                <div class="guildSettings">
+                    <div class="navguild">
+                        <div class="guild-opener">
+                            <div class="navGuildItems">
+                                <h4 class="guildSelectorName">Canales</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="userBox">
+                <img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="avatar" class="userAvatar">
+                <div class="userinfo">
+                    <h4 class="username">Usuario</h4>
+                    
+                </div>
+            </div>
+            
+            </div>
+            <div class="servers">
+                <!-- Lista de servidores -->
+                <div id="lista-servidores">
+                    <!-- Aquí se insertarán los servidores -->
+                </div>
+                <div class="homebutton">
+                    <svg class="homeIcon" aria-hidden="false" width="28" height="20" viewBox="0 0 28 20">
+                        <path fill="#FFFFFF">
+                            <!-- Agrega el contenido del icono aquí -->
+                        </path>
+                    </svg>
+                </div>
+                <hr class="server-divider" />
+                <!-- Aquí debes generar dinámicamente los servidores -->
+             
+                
+                <!-- Botón para crear un nuevo servidor -->
+                <div class="server invite" id="crear-servidor-btn">
+                    <p class="inviteButton">+</p>
+                </div>
+            </div>
+  
+                
+            </div>
+        </div>
+
+        <!-- Columna de canales -->
+        <div class="column channels">
+            <!-- Aquí se cargarán los canales del servidor seleccionado -->
+            <!-- Debes generar dinámicamente los canales -->
+            
+        </div>
+
+        <!-- Columna de mensajes -->
+        <div class="column messages">
+            <form id="crear-servidor-form" method="POST" action="/crear_servidor">
+                <label for="nombre-servidor">Nombre del Servidor:</label>
+                <input type="text" id="nombre-servidor" name="nombre" required>
+                            
+                <label for="descripcion-servidor">Descripción del Servidor:</label>
+                <textarea id="descripcion-servidor" name="descripcion" required></textarea>
+                            
+                <button type="submit">Crear Servidor</button>
+            </form>
+            <!-- Aquí se cargarán los mensajes del canal seleccionado -->
+            <!-- Debes generar dinámicamente los mensajes -->
+        </div>
+    </div>
+    
+        
+</body>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+
+</html>
