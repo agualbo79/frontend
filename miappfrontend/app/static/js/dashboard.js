@@ -1,99 +1,123 @@
 document.addEventListener("DOMContentLoaded", function() {
-  // Obtén una referencia al botón para crear servidores
-  var crearServidorBtn = document.getElementById("crear-servidor-btn");
-
-  // Obtén una referencia al formulario de creación de servidores
-  var crearServidorForm = document.getElementById("crear-servidor-form");
-
-  // Oculta el formulario al cargar la página
-  crearServidorForm.style.display = "none";
-
-  // Agrega un evento de clic al botón para mostrar el formulario
-  crearServidorBtn.addEventListener("click", function() {
-      // Muestra el formulario
-      crearServidorForm.style.display = "block";
-  });
-// Al cargar la página, carga los servidores del almacenamiento local
-window.addEventListener("load", function() {
-    var servidores = JSON.parse(localStorage.getItem("servidores")) || [];
+    var crearServidorBtn = document.getElementById("crear-servidor-btn");
+    var crearServidorForm = document.getElementById("crear-servidor-form");
     var listaServidores = document.getElementById("lista-servidores");
+    var listaCanales = document.getElementById("lista-canales");
+    var crearCanalBtn = document.getElementById("crear-canal-btn");
+    crearServidorForm.style.display = "none";
+    var servidores = JSON.parse(localStorage.getItem("servidores")) || [];
 
-    servidores.forEach(function(servidor) {
+    function cargarCanales(servidorId) {
+        console.log("Cargando canales para el servidor con ID:", servidorId);
+        var formularioCrearCanal = document.getElementById("crear-canal-form");
+        if (formularioCrearCanal) {
+            formularioCrearCanal.style.display = "none";
+        }
+
+        fetch("http://127.0.0.1:5000/usuario/obtener_canales/" + servidorId, {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(response => response.json())
+        .then(function(data) {
+            if (data.mensaje === "Canales obtenidos con éxito" && Array.isArray(data.canales)) {
+                var canales = data.canales; // Obtenemos la lista de canales
+                // Limpia la lista de canales existente
+                listaCanales.innerHTML = "";
+
+                // Agrega los nuevos canales
+                canales.forEach(function(canal) {
+                    var nuevoCanal = document.createElement("div");
+                    nuevoCanal.textContent = canal.nombre;
+                    listaCanales.appendChild(nuevoCanal);
+                });
+            } else {
+                console.warn("Respuesta inesperada del servidor:", data.mensaje);
+            }
+
+            // Mostrar el botón "Crear Canal" independientemente de la respuesta
+            crearCanalBtn.style.display = "block";
+        })
+        .catch(function(error) {
+            console.error("Error de red:", error);
+
+            // Mostrar el botón "Crear Canal" incluso si hay un error
+            crearCanalBtn.style.display = "block";
+        });
+    }
+
+
+
+     
+    function crearServidor(nombre, descripcion) {
+        var idCreador = sessionStorage.getItem("user_id");
+        var datosServidor = {
+            nombre: nombre,
+            descripcion: descripcion,
+            id_creador: idCreador
+        };
+
+        fetch("http://127.0.0.1:5000/usuario/crear_servidor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datosServidor),
+            credentials: "include"
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje === "Servidor creado exitosamente") {
+                alert("Servidor creado exitosamente");
+                datosServidor.id = data.id_servidor;
+                servidores.push(datosServidor);
+                localStorage.setItem("servidores", JSON.stringify(servidores));
+                var nuevoServidor = document.createElement("div");
+                nuevoServidor.textContent = nombre;
+                nuevoServidor.setAttribute("data-servidor-id", data.id_servidor);
+                listaServidores.appendChild(nuevoServidor);
+                document.getElementById("nombre-servidor").value = "";
+                document.getElementById("descripcion-servidor").value = "";
+                crearServidorForm.style.display = "none";
+            } else {
+                alert("Error al crear el servidor");
+            }
+        })
+        .catch(error => {
+            console.error("Error de red:", error);
+        });
+    } // Cierre de la función crearServidor
+
+    crearServidorBtn.addEventListener("click", function() {
+        crearServidorForm.style.display = "block";
+    });
+
+    crearServidorForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var nombre = document.getElementById("nombre-servidor").value;
+        var descripcion = document.getElementById("descripcion-servidor").value;
+        crearServidor(nombre, descripcion);
+    });
+
+    servidores.forEach(servidor => {
         var nuevoServidor = document.createElement("div");
         nuevoServidor.textContent = servidor.nombre;
+        nuevoServidor.setAttribute("data-servidor-id", servidor.id);
         listaServidores.appendChild(nuevoServidor);
+
+        nuevoServidor.addEventListener("click", function() {
+            console.log("Haciendo clic en un servidor");
+            var servidorId = nuevoServidor.getAttribute("data-servidor-id");
+            cargarCanales(servidorId);
+
+            var formularioCrearCanal = document.getElementById("crear-canal-form");
+            if (formularioCrearCanal) {
+                if (formularioCrearCanal.style.display === "none") {
+                    formularioCrearCanal.style.display = "block";
+                }
+            }
+
+            console.log("Estado del botón después de cargar canales:", crearCanalBtn.style.display);
+        });
     });
-});
-  // Agrega un evento de envío al formulario para enviar los datos al backend
-  crearServidorForm.addEventListener("submit", function(event) {
-      event.preventDefault(); // Evita el envío del formulario por defecto
-
-      // Captura los datos del formulario
-      var nombre = document.getElementById("nombre-servidor").value;
-      var descripcion = document.getElementById("descripcion-servidor").value;
-
-      // Obtén el id del usuario de la sesión del navegador
-      var idCreador = sessionStorage.getItem("user_id");
-
-      // Crea un objeto de datos para enviar al servidor
-      var datosServidor = {
-          nombre: nombre,
-          descripcion: descripcion,
-          id_creador: idCreador  // Añade el ID del usuario autenticado
-      };
-
-    
-      fetch("http://127.0.0.1:5000/usuario/crear_servidor", { // Cambia el puerto si es necesario
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify(datosServidor),
-    credentials: "include",  // Esto envía las cookies si es necesario
-})
-.then(function(response) {
-    if (response.status === 200) {
-        // El servidor respondió con éxito
-        alert("Servidor creado exitosamente");
-
-         // Guarda el servidor en el almacenamiento local
-         var servidores = JSON.parse(localStorage.getItem("servidores")) || [];
-         servidores.push(datosServidor);
-         localStorage.setItem("servidores", JSON.stringify(servidores));
-
-
-        // Aquí puedes agregar el código para visualizar el servidor en el frontend
-        // Por ejemplo, podrías agregar un nuevo elemento a una lista de servidores
-        var listaServidores = document.getElementById("lista-servidores");
-        var nuevoServidor = document.createElement("div");
-        nuevoServidor.textContent = nombre;  // Usa el nombre del servidor
-        listaServidores.appendChild(nuevoServidor);
-    } else {
-        // El servidor respondió con un error
-        alert("Error al crear el servidor");
-    }
-})
-.catch(function(error) {
-    console.error("Error de red:", error);
-});
-
-
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  // Obtén una referencia al botón para crear servidores
-  var crearServidorBtn = document.getElementById("crear-servidor-btn");
-
-  // Obtén una referencia al formulario de creación de servidores
-  var crearServidorForm = document.getElementById("crear-servidor-form");
-
-  // Oculta el formulario al cargar la página
-  crearServidorForm.style.display = "none";
-
-  // Agrega un evento de clic al botón para mostrar el formulario
-  crearServidorBtn.addEventListener("click", function() {
-      // Muestra el formulario
-      crearServidorForm.style.display = "block";
-  });
 });

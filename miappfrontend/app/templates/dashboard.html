@@ -20,7 +20,7 @@
                     <div class="navguild">
                         <div class="guild-opener">
                             <div class="navGuildItems">
-                                <h4 class="guildSelectorName">Canales</h4>
+                                <h4 class="guildSelectorName">Perfil</h4>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
             <div class="servers">
                 <!-- Lista de servidores -->
                 <div id="lista-servidores">
-                    <!-- Aquí se insertarán los servidores -->
+                    <div data-servidor-id="ID_DEL_SERVIDOR">Nombre del Servidor</div>
                 </div>
                 <div class="homebutton">
                     <svg class="homeIcon" aria-hidden="false" width="28" height="20" viewBox="0 0 28 20">
@@ -53,6 +53,7 @@
                 
                 <!-- Botón para crear un nuevo servidor -->
                 <div class="server invite" id="crear-servidor-btn">
+                   
                     <p class="inviteButton">+</p>
                 </div>
             </div>
@@ -63,6 +64,23 @@
 
         <!-- Columna de canales -->
         <div class="column channels">
+            <div id="lista-canales">
+             
+            <!-- Botón para crear un nuevo canal (inicialmente oculto) -->
+            <div class="server invite" id="crear-canal-btn">
+                <p class="inviteButton">Crear Canal</p>
+            </div>
+
+
+            <!-- Formulario para crear un nuevo canal (inicialmente oculto) -->
+            <form id="crear-canal-form" method="POST" action="/crear_canal" style="display: none;">
+                <label for="nombre-canal">Nombre del Canal:</label>
+                <input type="text" id="nombre-canal" name="nombre" required>
+                <button type="submit">Crear Canal</button>
+            </form>
+
+                <!-- Aquí se insertarán los canales -->
+            </div>
             <!-- Aquí se cargarán los canales del servidor seleccionado -->
             <!-- Debes generar dinámicamente los canales -->
             
@@ -70,6 +88,9 @@
 
         <!-- Columna de mensajes -->
         <div class="column messages">
+            <div id="lista-mensajes">
+                <!-- Aquí se insertarán los mensajes -->
+            </div>
             <form id="crear-servidor-form" method="POST" action="/crear_servidor">
                 <label for="nombre-servidor">Nombre del Servidor:</label>
                 <input type="text" id="nombre-servidor" name="nombre" required>
