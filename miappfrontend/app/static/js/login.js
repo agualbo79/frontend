@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('Redirigiendo al usuario al dashboard...');
                     const nextUrl = data.redirect_url || '/dashboard';
                     
-                    // Almacena el id del usuario en la sesión del navegador
+                    // Almacena el ID de usuario en la sesión del navegador
                     sessionStorage.setItem("user_id", data.user_id);
 
                     window.location.replace(nextUrl);

@@ -57,7 +57,17 @@
                     <p class="inviteButton">+</p>
                 </div>
             </div>
-  
+            <div class="server invite" id="crear-canal-btn">
+                <p class="inviteButton">Crear Canal</p>
+            </div>
+
+
+            <!-- Formulario para crear un nuevo canal (inicialmente oculto) -->
+            <form id="crear-canal-form" style="display: block;">
+                <label for="nombre-canal">Nombre del Canal:</label>
+                <input type="text" id="nombre-canal" name="nombre" required>
+                <button type="submit">Crear Canal </button>
+            </form>
                 
             </div>
         </div>
@@ -66,18 +76,8 @@
         <div class="column channels">
             <div id="lista-canales">
              
-            <!-- Botón para crear un nuevo canal (inicialmente oculto) -->
-            <div class="server invite" id="crear-canal-btn">
-                <p class="inviteButton">Crear Canal</p>
-            </div>
-
-
-            <!-- Formulario para crear un nuevo canal (inicialmente oculto) -->
-            <form id="crear-canal-form" method="POST" action="/crear_canal" style="display: none;">
-                <label for="nombre-canal">Nombre del Canal:</label>
-                <input type="text" id="nombre-canal" name="nombre" required>
-                <button type="submit">Crear Canal</button>
-            </form>
+            <!-- Botón para crear un nuevo canal  -->
+           
 
                 <!-- Aquí se insertarán los canales -->
             </div>
@@ -109,6 +109,7 @@
 </body>
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
 
 
 </html>
