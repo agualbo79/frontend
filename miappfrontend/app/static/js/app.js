@@ -76,3 +76,32 @@ export function crearServidor(nombre, descripcion) {
         console.error("Error de red:", error);
     });
 }
+
+
+
+
+// Función para obtener el ID del usuario actual
+function obtenerIdUsuarioActual() {
+   
+    // Verificar si el usuario está autenticado
+    const usuarioActual = JSON.parse(localStorage.getItem('usuarioActual'));
+    if (usuarioActual && usuarioActual.id) {
+        // Si el usuario está autenticado y tiene un ID válido, lo retornamos
+        return usuarioActual.id;
+    } else {
+        
+       
+        console.error('Usuario no autenticado o ID no válido');
+        return null; 
+    }
+}
+
+// Ejemplo de uso:
+const idRemitente = obtenerIdUsuarioActual();
+if (idRemitente) {
+   
+    console.log('ID del remitente:', idRemitente);
+    
+} else {
+    
+}

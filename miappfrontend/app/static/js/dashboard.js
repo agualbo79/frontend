@@ -1,7 +1,15 @@
+//dashboard.js
+console.log("canalActualId al cargar la página:", canalActualId);
+
+
 // Variable global para almacenar el servidor seleccionado
 var servidorSeleccionadoId = null;
 
+// Variable global para almacenar el ID del canal actual
+var canalActualId = null;
+
 document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOMContentLoaded se ha disparado");
     var crearServidorBtn = document.getElementById("crear-servidor-btn");
     var crearServidorForm = document.getElementById("crear-servidor-form");
     var listaServidores = document.getElementById("lista-servidores");
@@ -10,7 +18,14 @@ document.addEventListener("DOMContentLoaded", function() {
     crearServidorForm.style.display = "none";
     var servidores = JSON.parse(localStorage.getItem("servidores")) || [];
 
-     // Evento para crear un canal
+    
+    // Inicializa canalActualId en null al cargar la página
+    canalActualId = null;
+
+
+
+
+    // Evento para crear un canal
     var crearCanalForm = document.getElementById("crear-canal-form");
     crearCanalForm.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -98,17 +113,43 @@ crearCanalBtn.style.display = "block";
         })
         .then(response => response.json())
         .then(function(data) {
+            console.log("Respuesta del servidor al obtener canales:", data);
             if (data.mensaje === "Canales obtenidos con éxito" && Array.isArray(data.canales)) {
                 var canales = data.canales; // Obtenemos la lista de canales
                 // Limpia la lista de canales existente
                 listaCanales.innerHTML = "";
-
-                // Agrega los nuevos canales
-                canales.forEach(function(canal) {
-                    var nuevoCanal = document.createElement("div");
-                    nuevoCanal.textContent = canal.nombre;
-                    listaCanales.appendChild(nuevoCanal);
+            // Agrega los nuevos canales con eventos de clic
+            // Agregar los nuevos canales con eventos de clic
+            canales.forEach(function(canal) {
+                var nuevoCanal = document.createElement("div");
+                nuevoCanal.textContent = canal.nombre;
+            
+                // Asegúrate de que 'canal.id' sea el ID válido
+                if (canal.id) {
+                    nuevoCanal.setAttribute("data-canal-id", canal.id);
+                } else {
+                    console.error("ID de canal no válido para canal:", canal);
+                }
+            
+                nuevoCanal.classList.add("canal"); // Agrega la clase "canal" al elemento
+                listaCanales.appendChild(nuevoCanal);
+            
+                // Depuración: Verificar si los elementos de canal tienen data-canal-id
+                console.log("Elemento de canal creado con data-canal-id:", nuevoCanal.getAttribute("data-canal-id"));
+            });
+            // Ahora que todos los elementos del canal están en el DOM, puedes seleccionarlos
+            var elementosCanal = document.querySelectorAll(".canal");
+            console.log("Elementos de canal encontrados:", elementosCanal.length);
+            elementosCanal.forEach(function(elemento) {
+                elemento.addEventListener("click", function(event) {
+                    var canalId = this.getAttribute("data-canal-id");
+                    console.log("Haciendo clic en un canal. canalId:", canalId);
+                    canalActualId = canalId; // Actualiza el canal actual
+                    cargarMensajes(canalId); // Carga los mensajes para el canal seleccionado
                 });
+            });
+            
+           
                 // Mostrar el botón "Crear Canal" al inicio
                 crearCanalBtn.style.display = "block";
             } else {
@@ -176,7 +217,7 @@ crearCanalBtn.style.display = "block";
 
 
     // Evento para cargar canales al hacer clic en un servidor
-    servidores.forEach(servidor => {
+servidores.forEach(servidor => {
     var nuevoServidor = document.createElement("div");
     nuevoServidor.textContent = servidor.nombre;
     nuevoServidor.setAttribute("data-servidor-id", servidor.id);
@@ -198,7 +239,35 @@ crearCanalBtn.style.display = "block";
     });
 });
 
+// Evento para hacer clic en un canal
+document.addEventListener("click", function(event) {
+    if (event.target.classList.contains("canal")) {
+        var canalId = event.target.getAttribute("data-canal-id");
+        console.log("Haciendo clic en un canal. canalId:", canalId);
 
+        // Establece canalActualId al ID del canal
+        canalActualId = canalId;
+        console.log("canalActualId después de seleccionar un canal:", canalActualId);
+
+       
+        cargarMensajes(canalId);
+    }
+});
+
+// Evento para hacer clic en un canal (delegación de eventos)
+listaCanales.addEventListener("click", function(event) {
+    var canalId = event.target.getAttribute("data-canal-id");
+    if (canalId) {
+        console.log("Haciendo clic en un canal. canalId:", canalId);
+
+        // Establece canalActualId al ID del canal
+        canalActualId = canalId;
+        console.log("canalActualId después de seleccionar un canal:", canalActualId);
+
+       
+        cargarMensajes(canalId);
+    }
+});
     
 });
 function obtenerServidorSeleccionadoId() {
@@ -212,3 +281,6 @@ function obtenerServidorSeleccionadoId() {
         return null;
     }
 }
+
+
+

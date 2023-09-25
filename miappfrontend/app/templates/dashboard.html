@@ -37,8 +37,8 @@
             </div>
             <div class="servers">
                 <!-- Lista de servidores -->
-                <div id="lista-servidores">
-                    <div data-servidor-id="ID_DEL_SERVIDOR">Nombre del Servidor</div>
+                <div id="lista-servidores"class="servidores">
+                    <div data-servidor-id="ID_DEL_SERVIDOR">Servidores</div>
                 </div>
                 <div class="homebutton">
                     <svg class="homeIcon" aria-hidden="false" width="28" height="20" viewBox="0 0 28 20">
@@ -57,11 +57,18 @@
                     <p class="inviteButton">+</p>
                 </div>
             </div>
+            <!-- Columna de canales -->
+        <div class="column channels">
+            <div id="lista-canales">
+                <div class="canal" data-canal-id="ID_DEL_CANAL_1">Canales</div>
+                <div class="canal" data-canal-id="ID_DEL_CANAL_2"></div>
+                
+            </div>
             <div class="server invite" id="crear-canal-btn">
                 <p class="inviteButton">Crear Canal</p>
             </div>
 
-
+             
             <!-- Formulario para crear un nuevo canal (inicialmente oculto) -->
             <form id="crear-canal-form" style="display: block;">
                 <label for="nombre-canal">Nombre del Canal:</label>
@@ -72,36 +79,33 @@
             </div>
         </div>
 
-        <!-- Columna de canales -->
-        <div class="column channels">
-            <div id="lista-canales">
-             
-            <!-- Botón para crear un nuevo canal  -->
+        
+            
            
-
-                <!-- Aquí se insertarán los canales -->
-            </div>
-            <!-- Aquí se cargarán los canales del servidor seleccionado -->
-            <!-- Debes generar dinámicamente los canales -->
             
         </div>
-
+        <form id="crear-servidor-form" method="POST" action="/crear_servidor">
+            <label for="nombre-servidor">Nombre del Servidor:</label>
+            <input type="text" id="nombre-servidor" name="nombre" required>
+                        
+            <label for="descripcion-servidor">Descripción del Servidor:</label>
+            <textarea id="descripcion-servidor" name="descripcion" required></textarea>
+                        
+            <button type="submit">Crear Servidor</button>
+        </form>
         <!-- Columna de mensajes -->
         <div class="column messages">
-            <div id="lista-mensajes">
-                <!-- Aquí se insertarán los mensajes -->
+            <div id="lista-mensajes"class="lista-mensajes">
+                {% for mensaje in messages %}
+                    <div class="mensaje">{{ mensaje.contenido }}</div>
+                {% endfor %}
             </div>
-            <form id="crear-servidor-form" method="POST" action="/crear_servidor">
-                <label for="nombre-servidor">Nombre del Servidor:</label>
-                <input type="text" id="nombre-servidor" name="nombre" required>
-                            
-                <label for="descripcion-servidor">Descripción del Servidor:</label>
-                <textarea id="descripcion-servidor" name="descripcion" required></textarea>
-                            
-                <button type="submit">Crear Servidor</button>
+        </div>
+            
+            <form id="enviar-mensaje-form">
+                <input type="text" id="mensaje" placeholder="Escribe tu mensaje..." required>
+                <button type="submit">Enviar</button>
             </form>
-            <!-- Aquí se cargarán los mensajes del canal seleccionado -->
-            <!-- Debes generar dinámicamente los mensajes -->
         </div>
     </div>
     
@@ -109,7 +113,7 @@
 </body>
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
-
+<script src="{{ url_for('static', filename='js/mensajes.js') }}"></script>
 
 
 </html>

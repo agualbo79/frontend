@@ -1,4 +1,4 @@
-/* Estilos generales */
+
 body {
     background-color: #333; /* Fondo gris oscuro */
     font-family: Arial, sans-serif;
@@ -35,7 +35,7 @@ body {
 }
 
 .servers {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .server-divider {
@@ -46,7 +46,7 @@ body {
 .server {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 30px;
     cursor: pointer;
 }
 
@@ -68,21 +68,45 @@ body {
     padding: 10px;
     cursor: pointer;
 }
-.server.selected {
-    background-color: #007bff; /* Cambia el color de fondo cuando está seleccionado */
-    color: white; /* Cambia el color del texto cuando está seleccionado */
-    cursor: pointer; /* Cambia el cursor cuando se pasa por encima */
+.servidores.selected {
+    background-color: #007bff;
+    color: white; 
+    cursor: pointer; 
 }
 .inviteButton {
     font-size: 24px;
     color: #fff;
 }
 
-/* Estilos para el formulario de crear servidor */
+
+/* Estilos para la columna de mensajes */
 .column.messages {
-    background-color: #444; /* Fondo de la columna de mensajes */
-    padding: 20px;
+    background: #0f0c29;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    ;
+    border-radius: 10px; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    max-height: 400px; 
+    overflow-y: auto; 
+    color: #000;
 }
+.lista-mensajes {
+    background: #0f0c29;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    color: #fff; 
+    border-radius: 10px; 
+    padding: 20px; 
+    margin-bottom: 10px; 
+    text-align: right; 
+    clear: both; 
+    display: block;
+    
+}
+
 
 #crear-servidor-form {
     display: none; /* Inicialmente oculto */
@@ -182,4 +206,55 @@ body {
 
 #crear-canal-form button[type="submit"]:hover {
     background-color: #0056b3; /* Cambia el color al pasar el mouse */
+}
+
+
+
+
+
+
+#enviar-mensaje-form {
+    background: #0f0c29; 
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#enviar-mensaje-form input[type="text"] {
+    width: 80%; /* Ancho del campo de texto */
+    padding: 10px;
+    background-color: #666; /* Fondo del campo de texto */
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px; /* Espacio a la derecha del campo de texto */
+}
+
+#enviar-mensaje-form button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+.lista-canales .canal[data-canal-id]:hover {
+    cursor: pointer;
+    background-color: blue;
+}
+
+.servidores div[data-servidor-id]:hover,
+.lista-canales div[data-canal-id]:hover {
+    cursor: pointer;
+    background-color: blue;
+}
+.column.channels .canal:hover {
+    cursor: pointer;
+    background-color: blue;
 }
