@@ -117,13 +117,22 @@ function enviarMensaje(mensajeTexto, canalId) {
     });
 }
 
-// Función para obtener el ID del usuario actual (
+// Función para obtener el ID del usuario actual
 function obtenerIdUsuarioActual() {
-    // Devuelve un ID 
-    return 12; //  cambiar este valor des
+    // Devuelve un ID fijo (en este caso, 12)
+    return 12;
 }
 
-// Ejemplo de uso:
+// Función para obtener el ID y el nombre de usuario actual
+function obtenerInfoUsuarioActual() {
+    // Devuelve un objeto con el ID y el nombre de usuario
+    return {
+        id: 12, // ID fijo (puedes cambiarlo según tus necesidades)
+        nombreUsuario: "Usuario123" // Nombre de usuario fijo (cámbialo según tus necesidades)
+    };
+}
+
+// Ejemplo de uso de obtenerIdUsuarioActual:
 const idRemitente = obtenerIdUsuarioActual();
 if (idRemitente) {
     // Aquí puedes usar el ID del remitente para enviar un mensaje
@@ -133,3 +142,40 @@ if (idRemitente) {
     // Maneja el caso en el que no haya un usuario autenticado
     console.error('No hay usuario autenticado');
 }
+
+// Ejemplo de uso de obtenerInfoUsuarioActual:
+const infoUsuario = obtenerInfoUsuarioActual();
+const userIdElement = document.getElementById("user-id"); // Obtén el elemento con el ID "user-id"
+
+if (infoUsuario) {
+    // Crear elementos de párrafo para el nombre de usuario y el ID
+    const nombreUsuarioElement = document.createElement("p");
+    const idUsuarioElement = document.createElement("p");
+
+    // Establecer el contenido de los elementos
+    nombreUsuarioElement.textContent = `User: ${infoUsuario.nombreUsuario}`;
+    idUsuarioElement.textContent = `ID: ${infoUsuario.id}`;
+
+    // Agregar los elementos de párrafo al elemento contenedor
+    userIdElement.appendChild(nombreUsuarioElement);
+    userIdElement.appendChild(idUsuarioElement);
+
+    // Resto del código...
+} else {
+    // Maneja el caso en el que no haya un usuario autenticado
+    console.error('No hay usuario autenticado');
+}
+
+const userAvatar = document.querySelector(".userAvatar");
+const userPopup = document.querySelector(".user-popup");
+
+userAvatar.addEventListener("click", () => {
+    userPopup.style.display = userPopup.style.display === "block" ? "none" : "block";
+});
+
+// Para ocultar el pop-up si se hace clic fuera de él
+document.addEventListener("click", (event) => {
+    if (!userBox.contains(event.target) && userPopup.style.display === "block") {
+        userPopup.style.display = "none";
+    }
+});

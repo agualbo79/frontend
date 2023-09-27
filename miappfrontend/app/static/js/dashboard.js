@@ -22,6 +22,18 @@ document.addEventListener("DOMContentLoaded", function() {
     // Inicializa canalActualId en null al cargar la página
     canalActualId = null;
 
+   // Evento para mostrar u ocultar el formulario de creación de canal
+// Evento para mostrar u ocultar el formulario de creación de canal
+crearCanalBtn.addEventListener("click", function() {
+    var crearCanalForm = document.getElementById("crear-canal-form");
+    if (crearCanalForm.style.display === "none" || crearCanalForm.style.display === "") {
+        // Si el formulario está oculto o no tiene estilo de visualización, mostrarlo
+        crearCanalForm.style.display = "block";
+    } else {
+        // Si el formulario está visible, ocultarlo
+        crearCanalForm.style.display = "none";
+    }
+});
 
 
 
@@ -44,13 +56,13 @@ document.addEventListener("DOMContentLoaded", function() {
         // Verifica si se ha seleccionado un servidor
         if (servidorSeleccionadoId === null) {
         alert("Debes seleccionar un servidor antes de crear un canal.");
-        return; // No envíes la solicitud al servidor
+        return; 
     }
          // Crear un objeto con los datos del canal
          var datosCanal = {
              nombre: nombreCanal,
              id_servidor: servidorId,
-             id_creador: obtenerIdUsuarioActual() // Debes implementar esta función para obtener el ID del usuario actual
+             id_creador: obtenerIdUsuarioActual() 
          };
          console.log("Enviando solicitud para crear canal:", datosCanal);
  
@@ -122,8 +134,22 @@ crearCanalBtn.style.display = "block";
             // Agregar los nuevos canales con eventos de clic
             canales.forEach(function(canal) {
                 var nuevoCanal = document.createElement("div");
-                nuevoCanal.textContent = canal.nombre;
-            
+                
+                // Crear un elemento span para el símbolo "#"
+                var simboloNumeral = document.createElement("span");
+                simboloNumeral.textContent = "#";
+                simboloNumeral.classList.add("hashtag"); // Agrega una clase para aplicar estilos específicos
+                
+                // Agregar el símbolo "#" al nuevo canal
+                nuevoCanal.appendChild(simboloNumeral);
+                
+                // Agregar el nombre del canal después del símbolo "#"
+                var nombreCanal = document.createElement("span");
+                nombreCanal.textContent = canal.nombre;
+                
+                // Agregar el nombre del canal al nuevo canal
+                nuevoCanal.appendChild(nombreCanal);
+
                 // Asegúrate de que 'canal.id' sea el ID válido
                 if (canal.id) {
                     nuevoCanal.setAttribute("data-canal-id", canal.id);
@@ -133,7 +159,7 @@ crearCanalBtn.style.display = "block";
             
                 nuevoCanal.classList.add("canal"); // Agrega la clase "canal" al elemento
                 listaCanales.appendChild(nuevoCanal);
-            
+                
                 // Depuración: Verificar si los elementos de canal tienen data-canal-id
                 console.log("Elemento de canal creado con data-canal-id:", nuevoCanal.getAttribute("data-canal-id"));
             });
@@ -217,27 +243,66 @@ crearCanalBtn.style.display = "block";
 
 
     // Evento para cargar canales al hacer clic en un servidor
-servidores.forEach(servidor => {
-    var nuevoServidor = document.createElement("div");
-    nuevoServidor.textContent = servidor.nombre;
-    nuevoServidor.setAttribute("data-servidor-id", servidor.id);
-    listaServidores.appendChild(nuevoServidor);
+    servidores.forEach(servidor => {
+        var nuevoServidor = document.createElement("div");
+        nuevoServidor.textContent = servidor.nombre.charAt(0); // Obtenemos la primera inicial del nombre
+        nuevoServidor.setAttribute("data-servidor-id", servidor.id);
+        nuevoServidor.classList.add("server-icon"); // Agregamos una clase para dar estilo a los iconos
+        listaServidores.appendChild(nuevoServidor);
+    
+       // Agregamos el evento mouseover para mostrar el tooltip
+        nuevoServidor.addEventListener("mouseover", function(event) {
+            var nombreCompleto = servidor.nombre; // Obtenemos el nombre completo del servidor
+            mostrarTooltip(event.clientX, event.clientY - 20, nombreCompleto); // Ajusta la posición vertical (20px arriba)
+        });
 
-    nuevoServidor.addEventListener("click", function() {
-        console.log("Haciendo clic en un servidor");
-        var servidorId = nuevoServidor.getAttribute("data-servidor-id");
-        // Actualiza el servidor seleccionado globalmente
-        servidorSeleccionadoId = servidorId;
-        cargarCanales(servidorId);
-
-        var formularioCrearCanal = document.getElementById("crear-canal-form");
-        if (formularioCrearCanal) {
-            if (formularioCrearCanal.style.display === "block") {
-                formularioCrearCanal.style.display = "block";
-            }
+        // Función para mostrar el tooltip con coordenadas personalizadas
+        function mostrarTooltip(x, y, nombre) {
+            var tooltip = document.createElement("div");
+            tooltip.textContent = nombre;
+            tooltip.classList.add("tooltip");
+            tooltip.style.position = "fixed"; // Para que las coordenadas sean relativas a la ventana
+            tooltip.style.left = x + "px";
+            tooltip.style.top = y + "px";
+            document.body.appendChild(tooltip);
         }
+    
+        // Agregamos el evento mouseout para ocultar el tooltip cuando el mouse sale del icono
+        nuevoServidor.addEventListener("mouseout", function() {
+            ocultarTooltip();
+        });
+    
+        nuevoServidor.addEventListener("click", function() {
+            console.log("Haciendo clic en un servidor");
+            var servidorId = nuevoServidor.getAttribute("data-servidor-id");
+            // Actualiza el servidor seleccionado globalmente
+            servidorSeleccionadoId = servidorId;
+            cargarCanales(servidorId);
+    
+            var formularioCrearCanal = document.getElementById("crear-canal-form");
+            if (formularioCrearCanal) {
+                if (formularioCrearCanal.style.display === "block") {
+                    formularioCrearCanal.style.display = "block";
+                }
+            }
+        });
     });
-});
+
+    // Función para mostrar el tooltip
+function mostrarTooltip(nombre) {
+    var tooltip = document.createElement("div");
+    tooltip.textContent = nombre;
+    tooltip.classList.add("tooltip");
+    document.body.appendChild(tooltip);
+}
+
+// Función para ocultar el tooltip
+function ocultarTooltip() {
+    var tooltips = document.querySelectorAll(".tooltip");
+    tooltips.forEach(tooltip => {
+        tooltip.remove();
+    });
+}
 
 // Evento para hacer clic en un canal
 document.addEventListener("click", function(event) {

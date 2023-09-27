@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sala de chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -15,31 +14,48 @@
     <div class="rootDiv">
         <!-- Barra lateral con servidores y usuario -->
         <div class="side-bar">
+            <div class="content">
             <div class="nav">
                 <div class="guildSettings">
                     <div class="navguild">
                         <div class="guild-opener">
                             <div class="navGuildItems">
-                                <h4 class="guildSelectorName">Perfil</h4>
+                               
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="userBox">
-                <img src="https://cdn.discordapp.com/embed/avatars/0.png" alt="avatar" class="userAvatar">
-                <div class="userinfo">
-                    <h4 class="username">Usuario</h4>
-                    
-                </div>
-            </div>
             
+         
             </div>
+
+            <!-- Contenedor principal con servidores, canales y mensajes -->
+        <div class="main-container">
+             <!-- columna de servidores -->
             <div class="servers">
+                
                 <!-- Lista de servidores -->
+                
+<div class="servidor">
+    <!-- Agregar un div para el ícono circular -->
+    <div class="icono-servidor">
+        <!-- Mostrar la inicial del nombre del servidor -->
+        <span class="inicial-servidor">
+            <!-- Aquí debes colocar la inicial del nombre del servidor -->
+            S <!-- Reemplaza esto con la inicial adecuada -->
+        </span>
+    </div>
+    <!-- Mostrar el nombre completo del servidor (oculto) -->
+    <div class="nombre-servidor" data-servidor-id="ID_DEL_SERVIDOR"></div>
+</div>
+
                 <div id="lista-servidores"class="servidores">
+                    
                     <div data-servidor-id="ID_DEL_SERVIDOR">Servidores</div>
+                    <hr class="server-divider" />
                 </div>
+                
                 <div class="homebutton">
                     <svg class="homeIcon" aria-hidden="false" width="28" height="20" viewBox="0 0 28 20">
                         <path fill="#FFFFFF">
@@ -52,7 +68,8 @@
              
                 
                 <!-- Botón para crear un nuevo servidor -->
-                <div class="server invite" id="crear-servidor-btn">
+                
+                <div class="pf4" id="crear-servidor-btn">
                    
                     <p class="inviteButton">+</p>
                 </div>
@@ -64,17 +81,19 @@
                 <div class="canal" data-canal-id="ID_DEL_CANAL_2"></div>
                 
             </div>
-            <div class="server invite" id="crear-canal-btn">
-                <p class="inviteButton">Crear Canal</p>
-            </div>
+           <!-- Botón para crear un nuevo canal -->
+           
+<div class="server invite" id="crear-canal-btn">
+    <p class="inviteButton">+</p>
+</div>
 
-             
-            <!-- Formulario para crear un nuevo canal (inicialmente oculto) -->
-            <form id="crear-canal-form" style="display: block;">
-                <label for="nombre-canal">Nombre del Canal:</label>
-                <input type="text" id="nombre-canal" name="nombre" required>
-                <button type="submit">Crear Canal </button>
-            </form>
+<!-- Formulario para crear un nuevo canal (inicialmente oculto) -->
+<form id="crear-canal-form" style="display: none;">
+    <label for="nombre-canal">Nombre del Canal:</label>
+    <input type="text" id="nombre-canal" name="nombre" required>
+    
+    <button type="submit">Crear Canal</button>
+</form>
                 
             </div>
         </div>
@@ -93,21 +112,46 @@
                         
             <button type="submit">Crear Servidor</button>
         </form>
-        <!-- Columna de mensajes -->
-        <div class="column messages">
-            <div id="lista-mensajes"class="lista-mensajes">
-                {% for mensaje in messages %}
-                    <div class="mensaje">{{ mensaje.contenido }}</div>
-                {% endfor %}
-            </div>
+<!-- Columna de mensajes y formulario de mensajes en un contenedor -->
+<div class="columna-mensajes">
+    <!-- Barra de navegación en la parte superior de la columna de mensajes -->
+    <div class="navigation-bar">
+        <!-- Icono de campana -->
+        <div class="nav-icon">
+            <i class="fas fa-bell"></i>
         </div>
+       
+        <!-- Icono de chincheta -->
+        <div class="nav-icon">
+            <i class="fas fa-thumbtack"></i>
+        </div>
+        <!-- Buscador -->
+        <div class="nav-search">
+            <input type="text" placeholder="Buscar mensajes...">
+            <i class="fas fa-search"></i>
             
-            <form id="enviar-mensaje-form">
-                <input type="text" id="mensaje" placeholder="Escribe tu mensaje..." required>
-                <button type="submit">Enviar</button>
-            </form>
+        </div>
+        <!-- Icono de perfil -->
+        <div class="nav-icon">
+            <i class="fas fa-user"></i>
         </div>
     </div>
+
+    <div class="column messages">
+        <div id="lista-mensajes" class="lista-mensajes">
+            {% for mensaje in messages %}
+                <div class="mensaje">{{ mensaje.contenido }}</div>
+            {% endfor %}
+        </div>
+        
+        <!-- Formulario para enviar mensajes -->
+        <form id="enviar-mensaje-form">
+            <input type="text" id="mensaje" placeholder="Escribe tu mensaje..." required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</div>
+
     
         
 </body>
