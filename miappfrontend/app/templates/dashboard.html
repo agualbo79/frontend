@@ -37,18 +37,18 @@
                 
                 <!-- Lista de servidores -->
                 
-<div class="servidor">
-    <!-- Agregar un div para el ícono circular -->
-    <div class="icono-servidor">
-        <!-- Mostrar la inicial del nombre del servidor -->
-        <span class="inicial-servidor">
-            <!-- Aquí debes colocar la inicial del nombre del servidor -->
-            S <!-- Reemplaza esto con la inicial adecuada -->
-        </span>
-    </div>
-    <!-- Mostrar el nombre completo del servidor (oculto) -->
-    <div class="nombre-servidor" data-servidor-id="ID_DEL_SERVIDOR"></div>
-</div>
+                <div class="servidor">
+                    <!-- Agregar un div para el ícono circular -->
+                    <div class="icono-servidor">
+                        <!-- Mostrar la inicial del nombre del servidor -->
+                        <span class="inicial-servidor">
+                            <!-- Aquí debes colocar la inicial del nombre del servidor -->
+                            S <!-- Reemplaza esto con la inicial adecuada -->
+                        </span>
+                    </div>
+                    <!-- Mostrar el nombre completo del servidor (oculto) -->
+                    <div class="nombre-servidor" data-servidor-id="ID_DEL_SERVIDOR"></div>
+                </div>
 
                 <div id="lista-servidores"class="servidores">
                     
@@ -116,25 +116,36 @@
 <div class="columna-mensajes">
     <!-- Barra de navegación en la parte superior de la columna de mensajes -->
     <div class="navigation-bar">
-        <!-- Icono de campana -->
-        <div class="nav-icon">
-            <i class="fas fa-bell"></i>
+        <!-- Icono de perfil -->
+        <div class="nav-icon" id="user-icon">
+            <i class="fas fa-user"></i>
         </div>
-       
+    
+        <div class="overlay" id="overlay">
+            <div class="user-card">
+                <span id="close-button" class="close-button">×</span>
+                <form id="edit-form">
+                    <img src="https://www.softzone.es/app/uploads/2018/04/guest.png?x=480&quality=40" alt="Foto de perfil" width="200" height="150">
+                    <input type="file" id="profile-image" accept="image/*">
+                    <input type="text" id="username" value="Nombre de Usuario">
+                    <p>ID de Usuario: 123456</p>
+                    <button type="button" id="edit-button">Editar</button>
+                    <button type="submit" id="save-button" style="display: none;">Guardar</button>
+                </form>
+            </div>
+        </div>
         <!-- Icono de chincheta -->
         <div class="nav-icon">
             <i class="fas fa-thumbtack"></i>
         </div>
         <!-- Buscador -->
         <div class="nav-search">
-            <input type="text" placeholder="Buscar mensajes...">
+            <input type="text" placeholder="Buscar servidores...">
             <i class="fas fa-search"></i>
             
         </div>
-        <!-- Icono de perfil -->
-        <div class="nav-icon">
-            <i class="fas fa-user"></i>
-        </div>
+        
+        
     </div>
 
     <div class="column messages">
@@ -152,7 +163,33 @@
     </div>
 </div>
 
-    
+<script>
+    document.getElementById("edit-button").addEventListener("click", function () {
+        // Mostrar el formulario de edición
+        document.getElementById("edit-form").style.display = "block";
+        document.getElementById("edit-button").style.display = "none";
+    });
+
+    document.getElementById("close-button").addEventListener("click", function () {
+        // Ocultar el formulario de edición
+        document.getElementById("edit-form").style.display = "none";
+        document.getElementById("edit-button").style.display = "block";
+    });
+
+    document.getElementById("profile-image").addEventListener("change", function () {
+        // Actualizar la imagen de perfil al seleccionar un archivo
+        const imageInput = document.getElementById("profile-image");
+        const profileImage = document.querySelector(".user-card img");
+        const file = imageInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profileImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
         
 </body>
 

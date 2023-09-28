@@ -22,15 +22,15 @@ document.addEventListener("DOMContentLoaded", function() {
     // Inicializa canalActualId en null al cargar la página
     canalActualId = null;
 
-   // Evento para mostrar u ocultar el formulario de creación de canal
+  
 // Evento para mostrar u ocultar el formulario de creación de canal
 crearCanalBtn.addEventListener("click", function() {
     var crearCanalForm = document.getElementById("crear-canal-form");
     if (crearCanalForm.style.display === "none" || crearCanalForm.style.display === "") {
-        // Si el formulario está oculto o no tiene estilo de visualización, mostrarlo
+      
         crearCanalForm.style.display = "block";
     } else {
-        // Si el formulario está visible, ocultarlo
+        
         crearCanalForm.style.display = "none";
     }
 });
@@ -80,7 +80,7 @@ crearCanalBtn.addEventListener("click", function() {
              console.log("Respuesta del servidor al crear canal:", data);
              if (data.mensaje === "Canal creado exitosamente") {
                  alert("Canal creado exitosamente");
-                 // Puedes actualizar la lista de canales aquí si lo deseas
+               
              } else {
                  alert("Error al crear el canal");
              }
@@ -93,20 +93,16 @@ crearCanalBtn.addEventListener("click", function() {
 
     // Función para obtener el ID del usuario actual
     function obtenerIdUsuarioActual() {
-        // Aquí debes implementar la lógica para obtener el ID del usuario actual.
-        // Puede ser a través de variables de sesión, tokens de autenticación, etc.
-        // Por ejemplo, si tienes el ID almacenado en una variable de sesión llamada "user_id"
+       
         var idUsuario = sessionStorage.getItem("user_id");
 
-        // Si lo obtuviste con éxito, devuélvelo
+        
         if (idUsuario) {
             return idUsuario;
         } else {
-            // Si no pudiste obtener el ID del usuario actual, debes manejarlo según tu lógica
-            // Puedes lanzar un error, mostrar un mensaje al usuario o manejarlo de otra manera adecuada.
-            // Por ejemplo:
+            
             console.error("No se pudo obtener el ID del usuario actual");
-            return null; // O puedes lanzar un error personalizado aquí
+            return null; 
         }
     }
     // Función para cargar canales
@@ -249,6 +245,21 @@ crearCanalBtn.style.display = "block";
         nuevoServidor.setAttribute("data-servidor-id", servidor.id);
         nuevoServidor.classList.add("server-icon"); // Agregamos una clase para dar estilo a los iconos
         listaServidores.appendChild(nuevoServidor);
+
+        // Agregamos un botón de eliminación a cada servidor
+        var botonEliminar = document.createElement("span");
+        botonEliminar.textContent = "X";
+        botonEliminar.classList.add("eliminar-servidor"); //  clase para darle estilo
+
+        nuevoServidor.appendChild(botonEliminar);
+
+        botonEliminar.addEventListener("click", function(event) {
+            event.stopPropagation(); // Evitar que el evento llegue al servidor al hacer clic en el botón de eliminación
+            var servidorId = nuevoServidor.getAttribute("data-servidor-id");
+            eliminarServidor(servidorId);
+        });
+        
+
     
        // Agregamos el evento mouseover para mostrar el tooltip
         nuevoServidor.addEventListener("mouseover", function(event) {
@@ -303,6 +314,12 @@ function ocultarTooltip() {
         tooltip.remove();
     });
 }
+function eliminarServidor(servidorId) {
+    var servidor = document.querySelector(`[data-servidor-id="${servidorId}"]`);
+    if (servidor) {
+        servidor.remove(); // Elimina el servidor del HTML
+        }
+}
 
 // Evento para hacer clic en un canal
 document.addEventListener("click", function(event) {
@@ -347,5 +364,16 @@ function obtenerServidorSeleccionadoId() {
     }
 }
 
+const userIcon = document.getElementById("user-icon");
+const overlay = document.getElementById("overlay");
+const closeButton = document.getElementById("close-button");
+
+userIcon.addEventListener("click", () => {
+    overlay.style.display = "block";
+});
+
+closeButton.addEventListener("click", () => {
+    overlay.style.display = "none";
+});
 
 

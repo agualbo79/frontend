@@ -118,10 +118,10 @@ body {
     border-radius: 10px; 
     padding: 10px; 
     margin-bottom: 10px; 
-    width:1200px;
+    width:900px;
     overflow-y: auto; 
     color: #000;
-    height: 800px;
+    height: 600px;
     overflow-y: auto; /* Hace que la columna sea desplazable si es necesario */
     display: flex;
     flex-direction: column-reverse; /* Invierte la dirección de apilamiento */
@@ -338,6 +338,7 @@ body {
 
 
 .server-icon {
+    position: relative;
     width: 60px;
     height: 60px;
     background-color: #2a4cca; /* Cambia el color de fondo según tus preferencias */
@@ -388,20 +389,22 @@ body {
 /* Estilos para la barra de navegación */
 .navigation-bar {
     background-color: #333;
-    padding: 10px;
+    padding: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: #fff;
-    position: sticky; /* Hace que la barra se mantenga en la parte superior */
-    top: 0; /* Se adhiere en la parte superior de la columna */
-    z-index: 1; /* Asegura que esté por encima del contenido de la columna de mensajes */
+    position: sticky;
+    top: 0; 
+    z-index: 1; 
+    width: 200px; 
+    margin-left: auto; 
 }
 
 /* Estilos para los iconos en la barra de navegación (puedes personalizarlos) */
 .nav-icon {
     font-size: 24px;
-    margin-right: 5px;
+    margin-right: 15px;
     cursor: pointer;
 }
 
@@ -431,4 +434,62 @@ body {
     font-size: 20px;
     margin-left: 10px;
     cursor: pointer;
+}
+
+.eliminar-servidor {
+    position: absolute;
+    display: none;
+    right: 15px; /* Ajusta la posición horizontal en el borde derecho */
+    bottom: 15px; /* Ajusta la posición vertical en el borde inferior */
+    background-color: red; /* Cambia el color de fondo según tus preferencias */
+    color: white; /* Cambia el color del texto según tus preferencias */
+    padding: 12px 3px; /* Ajusta el espaciado interno (menos padding) */
+    cursor: pointer; /* Cambia el cursor al puntero cuando se pasa el mouse */
+    border: none; /* Elimina el borde */
+    border-radius: 50%; /* Crea un aspecto circular */
+    font-size: 10px; /* Ajusta el tamaño del texto (hazlo más pequeño) */
+}
+
+
+
+.server-icon:hover .eliminar-servidor {
+    display: inline-block; /* Muestra el botón al pasar el mouse sobre el servidor */
+}
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+   
+}
+
+.user-card {
+    background-color: #4e4e4e83;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-width: 300px; /* Ajusta el ancho máximo según tus preferencias */
+    margin: 0 auto; 
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.transparent-button {
+    background-color: transparent;
+    border: none; /* Para eliminar cualquier borde predeterminado */
+    cursor: pointer; /* Cambiar el cursor al estilo de un puntero cuando se pasa por encima */
 }
